@@ -13,10 +13,13 @@ public partial class MainPage : ContentPage
 
     private readonly List<(long threshold, string imageName)> avatarMilestones = new()
     {
-        (0, "dotnet_bot.png"),
-        (10000, "avatar_rich1.png"),
-        (100000, "avatar_rich2.png"),
-        (1000000, "avatar_millionaire.png"),
+        (0, "noob.png"),
+        (1000, "bad.png"),
+        (10000, "normal.png"),
+        (100000, "rich.png"),
+        (250000, "very_rich.png"),
+        (500000, "millioner.png"),
+        (1000000, "billioner.png"),
     };
 
     private int currentAvatarIndex = 0;
