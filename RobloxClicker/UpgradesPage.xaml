@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RobloxClicker.UpgradesPage"
+             BackgroundColor="#0A1428"
+             Title="Улучшения">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label Text="МАГАЗИН УЛУЧШЕНИЙ" 
+               FontSize="32" 
+               TextColor="#00D4FF" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center" />
+
+        <ScrollView VerticalScrollBarVisibility="Always">
+            <VerticalStackLayout x:Name="UpgradesLayout" 
+                                 Spacing="14" 
+                                 HorizontalOptions="Center" />
+        </ScrollView>
+
+        <Button Text="🔄 Сбросить весь прогресс" 
+                Clicked="ResetProgressClicked"
+                BackgroundColor="#1E3A8A"
+                TextColor="White"
+                HeightRequest="55"
+                WidthRequest="280"
+                CornerRadius="12"
+                HorizontalOptions="Center"
+                FontSize="16"/>
+    </VerticalStackLayout>
+</ContentPage>

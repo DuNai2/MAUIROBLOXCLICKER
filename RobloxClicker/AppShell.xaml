@@ -8,12 +8,12 @@
     Title="Roblox Clicker">
 
     <TabBar>
-        <!-- Главная вкладка - Кликер -->
         <Tab Title="Кликер" Icon="dotnet_bot.png">
             <ShellContent ContentTemplate="{DataTemplate views:MainPage}" />
         </Tab>
-
-        <!-- Вкладка Достижения -->
+        <Tab Title="Улучшения" Icon="dotnet_bot.png">
+            <ShellContent ContentTemplate="{DataTemplate views:UpgradesPage}" />
+        </Tab>
         <Tab Title="Достижения" Icon="dotnet_bot.png">
             <ShellContent ContentTemplate="{DataTemplate views:AchievementsPage}" />
         </Tab>
