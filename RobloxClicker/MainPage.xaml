@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RobloxClicker.MainPage"
+             x:Name="MainPageRoot"
+             BackgroundColor="#0F0F0F"
+             Title="Кликер">
+
+    <Grid>
+        <VerticalStackLayout Padding="20" Spacing="18" VerticalOptions="Fill">
+
+            <!-- Верхняя панель с заголовком и кнопкой сброса -->
+            <Grid>
+                <Label Text="ROBLOX CLICKER" 
+                       FontSize="36" 
+                       FontAttributes="Bold" 
+                       TextColor="#FF4500" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center"/>
+
+                <!-- Кнопка сброса в правом верхнем углу -->
+                <Button Text="🔄" 
+                        Clicked="ResetProgress"
+                        BackgroundColor="#C62828"
+                        TextColor="White"
+                        FontSize="18"
+                        WidthRequest="45"
+                        HeightRequest="45"
+                        CornerRadius="22"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Margin="0,0,10,0"/>
+            </Grid>
+
+            <!-- Robux -->
+            <Border BackgroundColor="#1A1A1A" 
+                    Stroke="#FF4500" 
+                    StrokeThickness="4" 
+                    Padding="20" 
+                    HorizontalOptions="Center" 
+                    WidthRequest="360">
+                <Label x:Name="RobuxLabel" 
+                       Text="Robux: 0" 
+                       FontSize="34" 
+                       FontAttributes="Bold" 
+                       TextColor="#00FF00" 
+                       HorizontalOptions="Center"/>
+            </Border>
+
+            <!-- Прогресс -->
+            <VerticalStackLayout Spacing="6" Margin="0,0,0,10">
+                <Label Text="Прогресс до следующего аватара" 
+                       TextColor="#AAAAAA" 
+                       HorizontalOptions="Center" 
+                       FontSize="16"/>
+                <ProgressBar x:Name="ProgressBar" 
+                             Progress="0" 
+                             ProgressColor="#00FFAA" 
+                             HeightRequest="14"/>
+                <Label x:Name="NextMilestoneLabel" 
+                       Text="До 10 000 Robux" 
+                       TextColor="#888888" 
+                       HorizontalOptions="Center" 
+                       FontSize="15"/>
+            </VerticalStackLayout>
+
+            <!-- Клик кнопка -->
+            <ImageButton x:Name="ClickButton" 
+                         Source="dotnet_bot.png" 
+                         HeightRequest="240" 
+                         WidthRequest="240" 
+                         HorizontalOptions="Center" 
+                         BackgroundColor="Transparent" 
+                         Clicked="OnClickButtonClicked"/>
+
+            <!-- Статистика -->
+            <Label x:Name="StatsLabel" 
+                   Text="1 Robux за клик" 
+                   HorizontalOptions="Center" 
+                   TextColor="#AAAAAA" 
+                   FontSize="18"/>
+
+            <!-- Магазин -->
+            <Label Text="МАГАЗИН УЛУЧШЕНИЙ" 
+                   FontSize="24" 
+                   TextColor="#FF4500" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   Margin="0,15,0,8"/>
+
+            <ScrollView HeightRequest="460" VerticalScrollBarVisibility="Always">
+                <VerticalStackLayout x:Name="UpgradesLayout" Spacing="10" Padding="8"/>
+            </ScrollView>
+
+            <!-- Кнопка сброса -->
+            <Button Text="🔄 Сбросить прогресс (для теста)" 
+                    Clicked="ResetProgress"
+                    BackgroundColor="#C62828"
+                    TextColor="White"
+                    HeightRequest="58"
+                    CornerRadius="12"
+                    Margin="0,15,0,0"
+                    FontSize="17"
+                    FontAttributes="Bold"/>
+
+
+        </VerticalStackLayout>
+
+        <!-- Попап -->
+        <Frame x:Name="PopupFrame"
+               IsVisible="False"
+               BackgroundColor="#1F1F1F"
+               BorderColor="#FF4500"
+               CornerRadius="28"
+               Padding="30"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               WidthRequest="320"
+               HeightRequest="380"
+               ZIndex="1000">
+            <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
+                <Image x:Name="PopupImage" Source="achievement_67.png" Aspect="AspectFit" HeightRequest="220" WidthRequest="220"/>
+                <Label Text="67 КЛИКОВ!" FontSize="28" FontAttributes="Bold" TextColor="#FF4500" HorizontalOptions="Center"/>
+                <Label Text="Крутой результат!" FontSize="17" TextColor="#CCCCCC" HorizontalOptions="Center"/>
+                <Button Text="Продолжить" Clicked="ClosePopup" BackgroundColor="#FF4500" TextColor="White" CornerRadius="12" HeightRequest="60" WidthRequest="220" FontSize="18"/>
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>
