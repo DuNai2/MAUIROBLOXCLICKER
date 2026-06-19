@@ -35,7 +35,8 @@ public partial class MainPage : ContentPage
     private void OnClickButtonClicked(object sender, EventArgs e)
     {
         GameManager.Instance.AddRobux(GameManager.Instance.ClickPower);
-        totalClicks++;
+        GameManager.Instance.TotalClicks++;     // ← Вот это было пропущено!
+
         UpdateUI();
         AnimateClick();
         CheckAvatarUpgrade();

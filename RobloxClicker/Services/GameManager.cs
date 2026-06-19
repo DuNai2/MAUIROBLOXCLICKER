@@ -10,7 +10,7 @@ public class GameManager
 
     public long Robux { get; private set; } = 0;
     public int ClickPower { get; private set; } = 1;
-    public long TotalClicks { get; private set; } = 0;
+    public long TotalClicks { get; set; } = 0;   // ← делаем set public
 
     public List<Upgrade> Upgrades { get; private set; } = new();
 
@@ -63,9 +63,12 @@ public class GameManager
 
     private void LoadProgress()
     {
-        Robux = Preferences.Get("Robux", 0L);
-        ClickPower = Preferences.Get("ClickPower", 1);
-        TotalClicks = Preferences.Get("TotalClicks", 0L);
+        // Для теста — каждый запуск начинается с нуля
+        // Preferences.Clear();           // ← Раскомментируй эту строку, если хочешь полный сброс каждый раз
+
+        Robux = 0;           // ← Меняем на 0
+        ClickPower = 1;
+        TotalClicks = 0;
     }
 
     private void SaveProgress()
@@ -83,4 +86,11 @@ public class GameManager
         TotalClicks = 0;
         Upgrades.ForEach(u => u.Level = 0);
     }
+
+    public void MarkAchievementCompleted(string achievementId)
+    {
+        // Пока просто для совместимости
+    }
+
+    // Сохранение/загрузка достижений можно расширить позже
 }
