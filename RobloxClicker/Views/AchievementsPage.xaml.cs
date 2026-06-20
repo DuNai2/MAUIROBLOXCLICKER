@@ -16,6 +16,7 @@ public partial class AchievementsPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+        GameManager.Instance.LoadAchievements();
         LoadAchievements();
         UpdateAchievementsUI();
     }
@@ -24,6 +25,7 @@ public partial class AchievementsPage : ContentPage
     {
         achievements.Clear();
 
+        // Мемные достижения
         achievements.Add(new Achievement
         {
             Id = "crazy_clicker",
@@ -34,8 +36,28 @@ public partial class AchievementsPage : ContentPage
             TargetValue = 67
         });
 
+        achievements.Add(new Achievement
+        {
+            Id = "test_100",
+            Name = "Тест 100 кликов",
+            Description = "Сделай 100 кликов",
+            Reward = 5000,
+            ConditionType = "clicks",
+            TargetValue = 100
+        });
+
+        achievements.Add(new Achievement
+        {
+            Id = "test_105",
+            Name = "Тест 105 кликов",
+            Description = "Сделай 105 кликов",
+            Reward = 10000,
+            ConditionType = "clicks",
+            TargetValue = 105
+        });
+
+        // Обычные достижения
         achievements.Add(new Achievement { Id = "first_click", Name = "Первый шаг", Description = "Сделай 1 клик", Reward = 50, ConditionType = "clicks", TargetValue = 1 });
-        achievements.Add(new Achievement { Id = "click_100", Name = "Кликер-новичок", Description = "Сделай 100 кликов", Reward = 300, ConditionType = "clicks", TargetValue = 100 });
         achievements.Add(new Achievement { Id = "click_500", Name = "Заработал репутацию", Description = "Сделай 500 кликов", Reward = 800, ConditionType = "clicks", TargetValue = 500 });
         achievements.Add(new Achievement { Id = "robux_10000", Name = "Маленький миллионер", Description = "Накопи 10 000 Robux", Reward = 1500, ConditionType = "robux", TargetValue = 10000 });
     }
@@ -46,55 +68,71 @@ public partial class AchievementsPage : ContentPage
 
         foreach (var ach in achievements)
         {
-            bool isUnlocked = CheckIfUnlocked(ach);
-            bool isCompleted = ach.IsCompleted;
+            bool completed = GameManager.Instance.IsAchievementCompleted(ach.Id);
+            bool unlocked = CheckIfUnlocked(ach);
 
             var border = new Border
             {
-                BackgroundColor = isCompleted ? Color.FromArgb("#1E3A8A") : Color.FromArgb("#1E2937"),
-                Stroke = isCompleted ? Color.FromArgb("#00FFAA") : Color.FromArgb("#00D4FF"),
+                BackgroundColor = completed ? Color.FromArgb("#1E3A8A") : Color.FromArgb("#1E2937"),
+                Stroke = completed ? Color.FromArgb("#00FFAA") : Color.FromArgb("#00D4FF"),
                 StrokeThickness = 2,
                 Padding = 14,
-                WidthRequest = 340,
+                WidthRequest = 380,
                 HorizontalOptions = LayoutOptions.Center,
                 Margin = new Thickness(0, 8)
             };
             border.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(14) };
 
-            var layout = new VerticalStackLayout { Spacing = 8 };
-
-            layout.Children.Add(new Label { Text = ach.Name, FontSize = 19, FontAttributes = FontAttributes.Bold, TextColor = Colors.White });
-            layout.Children.Add(new Label { Text = ach.Description, FontSize = 14, TextColor = Color.FromArgb("#94A3B8") });
-            layout.Children.Add(new Label
+            var grid = new Grid
             {
-                Text = isCompleted ? "✓ Получено" : $"+{ach.Reward} Robux",
+                ColumnDefinitions = { new ColumnDefinition { Width = GridLength.Star }, new ColumnDefinition { Width = 100 } }
+            };
+
+            var textLayout = new VerticalStackLayout { Spacing = 6 };
+
+            textLayout.Children.Add(new Label { Text = ach.Name, FontSize = 19, FontAttributes = FontAttributes.Bold, TextColor = Colors.White });
+            textLayout.Children.Add(new Label { Text = ach.Description, FontSize = 14, TextColor = Color.FromArgb("#94A3B8") });
+            textLayout.Children.Add(new Label
+            {
+                Text = completed ? "✓ Получено" : $"+{ach.Reward} Robux",
                 FontSize = 16,
-                TextColor = isCompleted ? Color.FromArgb("#00FFAA") : Color.FromArgb("#FFD700"),
+                TextColor = completed ? Color.FromArgb("#00FFAA") : Color.FromArgb("#FFD700"),
                 FontAttributes = FontAttributes.Bold
             });
 
-            if (!isCompleted)
+            if (!completed)
             {
                 var btn = new Button
                 {
-                    Text = isUnlocked ? "Забрать награду" : "Ещё не выполнено",
-                    BackgroundColor = isUnlocked ? Color.FromArgb("#00D4FF") : Color.FromArgb("#475569"),
-                    TextColor = isUnlocked ? Colors.Black : Color.FromArgb("#94A3B8"),
+                    Text = unlocked ? "Забрать награду" : "Ещё не выполнено",
+                    BackgroundColor = unlocked ? Color.FromArgb("#00D4FF") : Color.FromArgb("#475569"),
+                    TextColor = unlocked ? Colors.Black : Color.FromArgb("#94A3B8"),
                     CornerRadius = 10,
                     HeightRequest = 52,
-                    FontSize = 16,
-                    FontAttributes = FontAttributes.Bold,
-                    IsEnabled = isUnlocked,
-                    Margin = new Thickness(0, 8, 0, 0)
+                    IsEnabled = unlocked
                 };
 
-                if (isUnlocked)
+                if (unlocked)
                     btn.Clicked += (s, e) => ClaimReward(ach);
 
-                layout.Children.Add(btn);
+                textLayout.Children.Add(btn);
             }
 
-            border.Content = layout;
+            Grid.SetColumn(textLayout, 0);
+            grid.Children.Add(textLayout);
+
+            var image = new Image
+            {
+                Source = "achievement_67.png",
+                Aspect = Aspect.AspectFit,
+                HeightRequest = 85,
+                WidthRequest = 85,
+                HorizontalOptions = LayoutOptions.End
+            };
+            Grid.SetColumn(image, 1);
+            grid.Children.Add(image);
+
+            border.Content = grid;
             AchievementsLayout.Children.Add(border);
         }
     }
@@ -110,18 +148,12 @@ public partial class AchievementsPage : ContentPage
 
     private void ClaimReward(Achievement ach)
     {
-        if (ach.IsCompleted) return;
+        if (GameManager.Instance.IsAchievementCompleted(ach.Id)) return;
 
-        ach.IsCompleted = true;
+        GameManager.Instance.CompleteAchievement(ach.Id);
         GameManager.Instance.AddRobux(ach.Reward);
 
         DisplayAlert("Поздравляем!", $"Получено +{ach.Reward} Robux!\n\n{ach.Name}", "Круто");
-
-        // Специальный эффект для 67 кликов
-        if (ach.Id == "crazy_clicker")
-        {
-            // Можно вызвать метод из MainPage, но пока просто алерт
-        }
 
         UpdateAchievementsUI();
     }

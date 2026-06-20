@@ -18,6 +18,5 @@
                                  Spacing="14" 
                                  HorizontalOptions="Center" />
         </ScrollView>
-
     </VerticalStackLayout>
 </ContentPage>

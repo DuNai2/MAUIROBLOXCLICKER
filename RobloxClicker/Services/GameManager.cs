@@ -16,7 +16,9 @@ public class GameManager
 
     private GameManager()
     {
+        Preferences.Clear();
         LoadProgress();
+        LoadAchievements();
     }
 
     public void InitializeUpgrades()
@@ -63,10 +65,8 @@ public class GameManager
 
     private void LoadProgress()
     {
-        // Для теста — каждый запуск начинается с нуля
-        // Preferences.Clear();           // ← Раскомментируй эту строку, если хочешь полный сброс каждый раз
-
-        Robux = 0;           // ← Меняем на 0
+        // Для тестирования — каждый запуск начинается с нуля
+        Robux = 0;
         ClickPower = 1;
         TotalClicks = 0;
     }
@@ -86,11 +86,42 @@ public class GameManager
         TotalClicks = 0;
         Upgrades.ForEach(u => u.Level = 0);
     }
-
+    public void AddClick()
+    {
+        TotalClicks++;
+        SaveProgress();
+    }
     public void MarkAchievementCompleted(string achievementId)
     {
         // Пока просто для совместимости
     }
 
     // Сохранение/загрузка достижений можно расширить позже
+    // Достижения
+    public Dictionary<string, bool> CompletedAchievements { get; private set; } = new();
+
+    public void LoadAchievements()
+    {
+        CompletedAchievements.Clear();
+        CompletedAchievements["crazy_clicker"] = Preferences.Get("Ach_crazy_clicker", false);
+        CompletedAchievements["first_click"] = Preferences.Get("Ach_first_click", false);
+        CompletedAchievements["click_100"] = Preferences.Get("Ach_click_100", false);
+        CompletedAchievements["click_500"] = Preferences.Get("Ach_click_500", false);
+        CompletedAchievements["robux_10000"] = Preferences.Get("Ach_robux_10000", false);
+        CompletedAchievements["robux_100000"] = Preferences.Get("Ach_robux_100000", false);
+    }
+
+    public bool IsAchievementCompleted(string id)
+    {
+        return CompletedAchievements.TryGetValue(id, out bool completed) && completed;
+    }
+
+    public void CompleteAchievement(string id)
+    {
+        if (CompletedAchievements.ContainsKey(id) && !CompletedAchievements[id])
+        {
+            CompletedAchievements[id] = true;
+            Preferences.Set("Ach_" + id, true);
+        }
+    }
 }

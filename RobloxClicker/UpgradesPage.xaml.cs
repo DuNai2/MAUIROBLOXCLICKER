@@ -24,37 +24,46 @@ public partial class UpgradesPage : ContentPage
                 BackgroundColor = Color.FromArgb("#1E2937"),
                 Stroke = Color.FromArgb("#00D4FF"),
                 StrokeThickness = 2,
-                Padding = 14,
-                WidthRequest = 340,
+                Padding = 12,
+                WidthRequest = 370,
                 HorizontalOptions = LayoutOptions.Center,
                 Margin = new Thickness(0, 6)
             };
             border.StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(14) };
 
-            var layout = new VerticalStackLayout { Spacing = 8 };
+            var grid = new Grid
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition { Width = 90 }   // шире под картинку
+                }
+            };
 
-            var name = new Label
+            var textLayout = new VerticalStackLayout { Spacing = 6, Margin = new Thickness(0, 0, 12, 0) };
+
+            textLayout.Children.Add(new Label
             {
                 Text = upgrade.Name,
                 FontSize = 18,
                 FontAttributes = FontAttributes.Bold,
                 TextColor = Colors.White
-            };
+            });
 
-            var desc = new Label
+            textLayout.Children.Add(new Label
             {
                 Text = upgrade.Description,
                 FontSize = 14,
                 TextColor = Color.FromArgb("#94A3B8")
-            };
+            });
 
-            var cost = new Label
+            textLayout.Children.Add(new Label
             {
                 Text = $"Цена: {upgrade.CalculateCost():N0} Robux | Ур. {upgrade.Level}",
-                FontSize = 16,
+                FontSize = 15,
                 TextColor = Color.FromArgb("#FFD700"),
                 FontAttributes = FontAttributes.Bold
-            };
+            });
 
             var buyButton = new Button
             {
@@ -62,19 +71,32 @@ public partial class UpgradesPage : ContentPage
                 BackgroundColor = Color.FromArgb("#00D4FF"),
                 TextColor = Colors.Black,
                 CornerRadius = 10,
-                HeightRequest = 52,
+                HeightRequest = 50,
                 FontSize = 16,
-                FontAttributes = FontAttributes.Bold
+                FontAttributes = FontAttributes.Bold,
+                Margin = new Thickness(0, 8, 0, 0)
             };
-
             buyButton.Clicked += (s, e) => BuyUpgrade(upgrade, buyButton);
 
-            layout.Children.Add(name);
-            layout.Children.Add(desc);
-            layout.Children.Add(cost);
-            layout.Children.Add(buyButton);
+            textLayout.Children.Add(buyButton);
 
-            border.Content = layout;
+            Grid.SetColumn(textLayout, 0);
+            grid.Children.Add(textLayout);
+
+            // Картинка справа (прижата к краю, побольше)
+            var image = new Image
+            {
+                Source = "achievement_67.png",
+                Aspect = Aspect.AspectFit,
+                HeightRequest = 85,
+                WidthRequest = 85,
+                HorizontalOptions = LayoutOptions.End,
+                VerticalOptions = LayoutOptions.Center
+            };
+            Grid.SetColumn(image, 1);
+            grid.Children.Add(image);
+
+            border.Content = grid;
             UpgradesLayout.Children.Add(border);
         }
     }

@@ -35,12 +35,13 @@ public partial class MainPage : ContentPage
     private void OnClickButtonClicked(object sender, EventArgs e)
     {
         GameManager.Instance.AddRobux(GameManager.Instance.ClickPower);
-        GameManager.Instance.TotalClicks++;     // ← Вот это было пропущено!
+        GameManager.Instance.AddClick();        // важно!
 
         UpdateUI();
         AnimateClick();
         CheckAvatarUpgrade();
-        CheckSpecialAchievement();
+        CheckSpecialAchievement();   // вызываем каждый клик
+
     }
 
     private void PassiveIncomeTick(object? sender, ElapsedEventArgs e)
@@ -64,7 +65,8 @@ public partial class MainPage : ContentPage
 
     private async void CheckSpecialAchievement()
     {
-        if (totalClicks == 67)
+        if (GameManager.Instance.TotalClicks == 67 &&
+            !GameManager.Instance.IsAchievementCompleted("crazy_clicker"))
         {
             await TriggerCrazyEffect();
         }
@@ -73,13 +75,17 @@ public partial class MainPage : ContentPage
     private async Task TriggerCrazyEffect()
     {
         ClickButton.IsEnabled = false;
+
         await ShakeScreen();
         await ShowPopupImage();
-        await Task.Delay(3000);
+
+        await Task.Delay(3500);
+
         if (PopupFrame.IsVisible)
         {
             await ClosePopupInternal();
         }
+
         ClickButton.IsEnabled = true;
     }
 
@@ -99,9 +105,11 @@ public partial class MainPage : ContentPage
     private async Task ShowPopupImage()
     {
         if (PopupFrame == null) return;
+
         PopupFrame.IsVisible = true;
         PopupFrame.Opacity = 0;
         PopupFrame.Scale = 0.7;
+
         await PopupFrame.FadeTo(1, 300);
         await PopupFrame.ScaleTo(1.05, 250, Easing.CubicOut);
         await PopupFrame.ScaleTo(1.0, 180, Easing.CubicIn);

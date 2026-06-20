@@ -13,20 +13,11 @@
                FontAttributes="Bold" 
                HorizontalOptions="Center" />
 
-        <ScrollView VerticalScrollBarVisibility="Always" HeightRequest="620">
+        <ScrollView VerticalScrollBarVisibility="Always" HeightRequest="650">
             <VerticalStackLayout x:Name="UpgradesLayout" 
                                  Spacing="14" 
                                  HorizontalOptions="Center" />
         </ScrollView>
 
-        <Button Text="🔄 Сбросить весь прогресс" 
-                Clicked="ResetProgressClicked"
-                BackgroundColor="#1E3A8A"
-                TextColor="White"
-                HeightRequest="55"
-                WidthRequest="280"
-                CornerRadius="12"
-                HorizontalOptions="Center"
-                FontSize="16"/>
     </VerticalStackLayout>
 </ContentPage>
