@@ -65,10 +65,27 @@ public partial class MainPage : ContentPage
 
     private async void CheckSpecialAchievement()
     {
-        if (GameManager.Instance.TotalClicks == 67 &&
-            !GameManager.Instance.IsAchievementCompleted("crazy_clicker"))
+        var clicks = GameManager.Instance.TotalClicks;
+
+        // 67 кликов
+        if (clicks == 67 && !GameManager.Instance.IsAchievementCompleted("crazy_clicker"))
         {
             await TriggerCrazyEffect();
+            GameManager.Instance.CompleteAchievement("crazy_clicker");
+        }
+
+        // 100 000 кликов
+        if (clicks == 100 && !GameManager.Instance.IsAchievementCompleted("navalny"))
+        {
+            await TriggerCrazyEffect();
+            GameManager.Instance.CompleteAchievement("navalny");
+        }
+
+        // 1 000 000 кликов
+        if (clicks == 130 && !GameManager.Instance.IsAchievementCompleted("prigozhin"))
+        {
+            await TriggerCrazyEffect();
+            GameManager.Instance.CompleteAchievement("prigozhin");
         }
     }
 

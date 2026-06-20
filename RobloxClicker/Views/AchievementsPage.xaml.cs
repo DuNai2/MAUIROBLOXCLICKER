@@ -25,7 +25,7 @@ public partial class AchievementsPage : ContentPage
     {
         achievements.Clear();
 
-        // Мемные достижения
+        // Мемные с анимацией
         achievements.Add(new Achievement
         {
             Id = "crazy_clicker",
@@ -38,31 +38,33 @@ public partial class AchievementsPage : ContentPage
 
         achievements.Add(new Achievement
         {
-            Id = "test_100",
-            Name = "Тест 100 кликов",
-            Description = "Сделай 100 кликов",
-            Reward = 5000,
+            Id = "navalny",
+            Name = "Хотел стать символом, но стал огурцом",
+            Description = "Сделай 100 000 кликов",
+            Reward = 25000,
             ConditionType = "clicks",
             TargetValue = 100
         });
 
         achievements.Add(new Achievement
         {
-            Id = "test_105",
-            Name = "Тест 105 кликов",
-            Description = "Сделай 105 кликов",
-            Reward = 10000,
+            Id = "prigozhin",
+            Name = "Где мои снаряды!",
+            Description = "Сделай 1 000 000 кликов",
+            Reward = 100000,
             ConditionType = "clicks",
-            TargetValue = 105
+            TargetValue = 130
         });
 
         // Обычные достижения
         achievements.Add(new Achievement { Id = "first_click", Name = "Первый шаг", Description = "Сделай 1 клик", Reward = 50, ConditionType = "clicks", TargetValue = 1 });
+        achievements.Add(new Achievement { Id = "click_100", Name = "Кликер-новичок", Description = "Сделай 100 кликов", Reward = 300, ConditionType = "clicks", TargetValue = 100 });
         achievements.Add(new Achievement { Id = "click_500", Name = "Заработал репутацию", Description = "Сделай 500 кликов", Reward = 800, ConditionType = "clicks", TargetValue = 500 });
         achievements.Add(new Achievement { Id = "robux_10000", Name = "Маленький миллионер", Description = "Накопи 10 000 Robux", Reward = 1500, ConditionType = "robux", TargetValue = 10000 });
+        achievements.Add(new Achievement { Id = "robux_100000", Name = "Богатый роблоксер", Description = "Накопи 100 000 Robux", Reward = 5000, ConditionType = "robux", TargetValue = 100000 });
     }
 
-    private void UpdateAchievementsUI()
+    public void UpdateAchievementsUI()
     {
         AchievementsLayout.Children.Clear();
 
@@ -85,7 +87,11 @@ public partial class AchievementsPage : ContentPage
 
             var grid = new Grid
             {
-                ColumnDefinitions = { new ColumnDefinition { Width = GridLength.Star }, new ColumnDefinition { Width = 100 } }
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition { Width = GridLength.Star },
+                    new ColumnDefinition { Width = 100 }
+                }
             };
 
             var textLayout = new VerticalStackLayout { Spacing = 6 };
